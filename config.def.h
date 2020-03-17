@@ -4,10 +4,14 @@
 const unsigned int interval = 1000;
 
 /* text to show if no value can be retrieved */
-static const char unknown_str[] = "n/a";
+static const char unknown_str[] = "N/A";
 
 /* maximum output string length */
 #define MAXLEN 2048
+
+#define WIRELESS_INTERFACE "wlp1s0"
+#define DATE_FORMAT        "%a %-e %h, %-l:%M:%S %p"
+#define BATTERY            "BAT0"
 
 /*
  * function            description                     argument (example)
@@ -62,6 +66,9 @@ static const char unknown_str[] = "n/a";
  * wifi_essid          WiFi ESSID                      interface name (wlan0)
  */
 static const struct arg args[] = {
-	/* function format          argument */
-	{ datetime, "%s",           "%F %T" },
+	/* function         format          argument */
+	{ ram_free,         "| %s",         NULL                 },
+	{ wifi_essid,       "| %s",         WIRELESS_INTERFACE   },
+	{ battery_perc,     "| %s",         BATTERY              },
+	{ datetime,         " | %s",        DATE_FORMAT          },
 };
