@@ -9,9 +9,11 @@ static const char unknown_str[] = "N/A";
 /* maximum output string length */
 #define MAXLEN 2048
 
-#define WIRELESS_INTERFACE "wlp1s0"
+#define WIRELESS_INTERFACE "wlp2s0"
 #define DATE_FORMAT        "%a %-e %h, %-l:%M:%S %p"
-#define BATTERY            "BAT0"
+#define BATTERY            "BAT1"
+
+#define TEMP(x) "/sys/class/thermal/thermal_zone" x "/temp"
 
 /*
  * function            description                     argument (example)
@@ -67,8 +69,10 @@ static const char unknown_str[] = "N/A";
  */
 static const struct arg args[] = {
 	/* function         format          argument */
-	{ ram_free,         "| %s",         NULL                 },
-	{ wifi_essid,       "| %s",         WIRELESS_INTERFACE   },
-	{ battery_perc,     "| %s",         BATTERY              },
-	{ datetime,         " | %s",        DATE_FORMAT          },
+	{ temp,             "| %s°C",       TEMP("0")            },
+	{ temp,             " | %s°C",      TEMP("1")            },
+	{ ram_free,         " | %s",        NULL                 },
+	{ wifi_essid,       " | %s",        WIRELESS_INTERFACE   },
+	{ battery_perc,     " | %s%%",      BATTERY              },
+	{ datetime,         " | %s ",      DATE_FORMAT          },
 };
