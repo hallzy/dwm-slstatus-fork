@@ -15,6 +15,9 @@ static const char unknown_str[] = "N/A";
 
 #define TEMP(x) "/sys/class/thermal/thermal_zone" x "/temp"
 
+#define IP_LOC_FILE "/mnt/2AD8624BD86214FB/Users/Steven/ip_location"
+#define IP_LOCATION "[ -f " IP_LOC_FILE " ] && cat " IP_LOC_FILE
+
 /*
  * function            description                     argument (example)
  *
@@ -73,6 +76,7 @@ static const struct arg args[] = {
 	{ temp,             " | %s°C",      TEMP("1")            },
 	{ ram_free,         " | %s",        NULL                 },
 	{ wifi_essid,       " | %s",        WIRELESS_INTERFACE   },
+	{ run_command,      " | %s",        IP_LOCATION          },
 	{ battery_perc,     " | %s%%",      BATTERY              },
-	{ datetime,         " | %s ",      DATE_FORMAT          },
+	{ datetime,         " | %s ",      DATE_FORMAT           },
 };
