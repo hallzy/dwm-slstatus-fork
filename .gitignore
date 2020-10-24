@@ -1,3 +1,4 @@
 *.o
 slstatus
 config.h
+computer_specific.h

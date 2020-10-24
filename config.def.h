@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include "computer_specific.h"
 
 /* interval between updates (in ms) */
 const unsigned int interval = 1000;
@@ -9,9 +10,15 @@ static const char unknown_str[] = "N/A";
 /* maximum output string length */
 #define MAXLEN 2048
 
-#define WIRELESS_INTERFACE "wlp2s0"
+#if COMPUTER == WORK
+	#define WIRELESS_INTERFACE "wlp59s0"
+	#define BATTERY            "BAT0"
+#else
+	#define WIRELESS_INTERFACE "wlp2s0"
+	#define BATTERY            "BAT1"
+#endif
+
 #define DATE_FORMAT        "%a %-e %h, %-l:%M:%S %p"
-#define BATTERY            "BAT1"
 
 #define TEMP(x) "/sys/class/thermal/thermal_zone" x "/temp"
 
@@ -79,8 +86,10 @@ static const struct arg args[] = {
 	{ temp,             " | %s°C",      TEMP("1")            },
 	{ ram_free,         " | %s",        NULL                 },
 	{ wifi_essid,       " | %s",        WIRELESS_INTERFACE   },
+#if COMPUTER != WORK
 	{ run_command,      " | %s",        PING                 },
 	{ run_command,      " | %s",        IP_LOCATION          },
+#endif
 	{ battery_perc,     " | %s%%",      BATTERY              },
 	{ datetime,         " | %s ",      DATE_FORMAT           },
 };
