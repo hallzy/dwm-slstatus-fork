@@ -10,7 +10,7 @@ static const char unknown_str[] = "N/A";
 /* maximum output string length */
 #define MAXLEN 2048
 
-#if COMPUTER == WORK
+#ifdef WORK_COMPUTER
 	#define WIRELESS_INTERFACE "wlp59s0"
 	#define BATTERY            "BAT0"
 #else
@@ -86,7 +86,7 @@ static const struct arg args[] = {
 	{ temp,             " | %s°C",      TEMP("1")            },
 	{ ram_free,         " | %s",        NULL                 },
 	{ wifi_essid,       " | %s",        WIRELESS_INTERFACE   },
-#if COMPUTER != WORK
+#ifndef WORK_COMPUTER
 	{ run_command,      " | %s",        PING                 },
 	{ run_command,      " | %s",        IP_LOCATION          },
 #endif
