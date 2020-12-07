@@ -82,8 +82,13 @@ static const char unknown_str[] = "N/A";
  */
 static const struct arg args[] = {
 	/* function         format          argument */
+#ifndef WORK_COMPUTER
 	{ temp,             "| %s°C",       TEMP("0")            },
 	{ temp,             " | %s°C",      TEMP("1")            },
+#else
+	{ temp,             "| %s°C",       TEMP("11")            },
+	{ temp,             " | %s°C",      TEMP("12")            },
+#endif
 	{ ram_free,         " | %s",        NULL                 },
 	{ wifi_essid,       " | %s",        WIRELESS_INTERFACE   },
 #ifndef WORK_COMPUTER
