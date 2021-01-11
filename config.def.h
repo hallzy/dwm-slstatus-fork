@@ -26,7 +26,8 @@ static const char unknown_str[] = "N/A";
 #define IP_LOCATION "[ -f " IP_LOC_FILE " ] && cat " IP_LOC_FILE
 
 #define PING_FILE "/mnt/2AD8624BD86214FB/Users/Steven/ping"
-#define PING "[ -f " PING_FILE " ] && cat " PING_FILE
+#define PING      "[ -f " PING_FILE " ] && cat " PING_FILE
+#define UTC_DATE  "date --utc \"+%a %h %e %H:%M:%S %Y UTC\""
 
 /*
  * function            description                     argument (example)
@@ -96,5 +97,8 @@ static const struct arg args[] = {
 	{ run_command,      " | %s",        IP_LOCATION          },
 #endif
 	{ battery_perc,     " | %s%%",      BATTERY              },
-	{ datetime,         " | %s ",      DATE_FORMAT           },
+#ifdef WORK_COMPUTER
+	{ run_command,      " | %s",        UTC_DATE             },
+#endif
+	{ datetime,         " | %s ",       DATE_FORMAT          },
 };
