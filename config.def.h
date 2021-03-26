@@ -10,17 +10,21 @@ static const char unknown_str[] = "N/A";
 /* maximum output string length */
 #define MAXLEN 2048
 
+#define TEMP(x) "/sys/class/thermal/thermal_zone" x "/temp"
+
 #ifdef WORK_COMPUTER
 	#define WIRELESS_INTERFACE "wlp59s0"
 	#define BATTERY            "BAT0"
+	#define TEMP1              TEMP("11")
+	#define TEMP2              TEMP("12")
 #else
 	#define WIRELESS_INTERFACE "wlp2s0"
 	#define BATTERY            "BAT1"
+	#define TEMP1              TEMP("0")
+	#define TEMP2              TEMP("1")
 #endif
 
 #define DATE_FORMAT        "%a %-e %h, %-l:%M:%S %p"
-
-#define TEMP(x) "/sys/class/thermal/thermal_zone" x "/temp"
 
 #define IP_LOC_FILE "/mnt/2AD8624BD86214FB/Users/Steven/ip_location"
 #define IP_LOCATION "[ -f " IP_LOC_FILE " ] && cat " IP_LOC_FILE
@@ -85,22 +89,35 @@ static const char unknown_str[] = "N/A";
  */
 static const struct arg args[] = {
 	/* function         format          argument */
+	{ separator,        "| ",           NULL                 },
+	{ temp,             "%s°C",         TEMP1                },
+	{ separator,        " | ",          NULL                 },
+	{ temp,             "%s°C",         TEMP2                },
+	{ separator,        " | ",          NULL                 },
+	{ ram_free,         "%s",           NULL                 },
+	{ separator,        " | ",          NULL                 },
+	{ wifi_essid,       "%s",           WIRELESS_INTERFACE   },
+
 #ifndef WORK_COMPUTER
-	{ temp,             "| %s°C",       TEMP("0")            },
-	{ temp,             " | %s°C",      TEMP("1")            },
-#else
-	{ temp,             "| %s°C",       TEMP("11")            },
-	{ temp,             " | %s°C",      TEMP("12")            },
+	{ separator,        " | ",          NULL                 },
+	{ run_command,      "%s",           PING                 },
+	{ separator,        " | ",          NULL                 },
+	{ run_command,      "%s",           IP_LOCATION          },
 #endif
-	{ ram_free,         " | %s",        NULL                 },
-	{ wifi_essid,       " | %s",        WIRELESS_INTERFACE   },
-#ifndef WORK_COMPUTER
-	{ run_command,      " | %s",        PING                 },
-	{ run_command,      " | %s",        IP_LOCATION          },
-#endif
-	{ battery_perc,     " | %s%%",      BATTERY              },
+
+	/* Do something like: ++ 95% ++ */
+	{ separator,        " | ",          NULL                 },
+	{ battery_state,    "%s",           BATTERY              },
+	{ battery_state,    "%s",           BATTERY              },
+	{ battery_perc,     " %s%% ",       BATTERY              },
+	{ battery_state,    "%s",           BATTERY              },
+	{ battery_state,    "%s",           BATTERY              },
+
 #ifdef WORK_COMPUTER
-	{ run_command,      " | %s",        UTC_DATE             },
+	{ separator,        " | ",          NULL                 },
+	{ run_command,      "%s",           UTC_DATE             },
 #endif
-	{ datetime,         " | %s ",       DATE_FORMAT          },
+
+	{ separator,        " | ",          NULL                 },
+	{ datetime,         "%s ",          DATE_FORMAT          },
 };

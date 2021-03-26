@@ -53,6 +53,9 @@
 			{ "Charging",    "+" },
 			{ "Discharging", "-" },
 			{ "Full",        "o" },
+			/* STEVEN COMMENT: I don't know why, but this is the state my battery gives */
+			/* when it is full charged... Go figure. */
+			{ "Unknown",      "" },
 		};
 		size_t i;
 		char path[PATH_MAX], state[12];
